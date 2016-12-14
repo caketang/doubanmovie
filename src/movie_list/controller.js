@@ -1,28 +1,30 @@
 (function (angular) {
-	
-	var module = angular.module('moviecat.coming_soon', ['ngRoute','moviecat.http'])
+	// 正在热映和top，即将三个模块控制和视图抽象为一个公用模块
+	var module = angular.module('moviecat.movie_list', ['ngRoute','moviecat.http'])
 		//配置模块路由
-		.config(['$routeProvider',function($routeProvider) {
-			$routeProvider.when('/coming_soon/:page',
+		.config(['$routeProvider',function($routeProvider) 
+					$routeProvider.when('/:category/:page', // 匹配
 			{
-				templateUrl:'coming_soon/view.html',
-				controller:'ComingSoonController'
+				templateUrl:'movie_list/view.html',
+				controller:'MovieListController'
 			});
 		}])
-		.controller('ComingSoonController', ['$scope','$routeParams','$route','HttpService',function($scope,$routeParams,$route,HttpService){
+		.controller('MovieListController', ['$scope','$routeParams','$route','HttpService',function($scope,$routeParams,$route,HttpService){
 			// 设计暴露的数据 暴露数据的行为
-			// 遮罩
+		
+			//console.log($routeParams.category)
 			var page = parseInt($routeParams.page); // 一共多少页
-			console.log(page);
+			//console.log(page);
 			var count = 10; // 每一页的条数
 			var start = (page - 1) * count; //开始的
+			// 遮罩层
 			$scope.loading= true;
 			$scope.subjects = [];
 			$scope.message='';
-			$scope.totalCount=0;
-			$scope.totalPages=0;
-			$scope.currentPage=page;
-			HttpService.jsonp('http://api.douban.com/v2/movie/coming_soon',{
+			$scope.totalCount=0; //总共多少
+			$scope.totalPages=0; // 总共多少页
+			$scope.currentPage=page; // 当前页面
+			HttpService.jsonp('http://api.douban.com/v2/movie/'+$routeParams.category,{
 				start:start,
 				count:count
 			},function (data) {
@@ -32,9 +34,9 @@
 				$scope.totalPages= Math.ceil($scope.totalCount /  count);
 				$scope.loading=false;
 				$scope.$apply();
-				console.log(data)
+				//console.log(data)
 			})
-			//暴露更改页码的行为
+			//暴露更改页码的行为 
 			$scope.go=function (page) {
 				if(page>=1&&page<=$scope.totalPages)
 				{
