@@ -1,0 +1,106 @@
+(function (angular) {
+	var data = {
+  "count": 1,
+  "start": 0,
+  "total": 27,
+  "subjects": [
+    {
+      "rating": {
+        "max": 10,
+        "average": 8.8,
+        "stars": "45",
+        "min": 0
+      },
+      "genres": [
+        "剧情",
+        "传记",
+        "历史"
+      ],
+      "title": "血战钢锯岭",
+      "casts": [
+        {
+          "alt": "https://movie.douban.com/celebrity/1022620/",
+          "avatars": {
+            "small": "http://img7.doubanio.com/img/celebrity/small/13151.jpg",
+            "large": "http://img7.doubanio.com/img/celebrity/large/13151.jpg",
+            "medium": "http://img7.doubanio.com/img/celebrity/medium/13151.jpg"
+          },
+          "name": "安德鲁·加菲尔德",
+          "id": "1022620"
+        },
+        {
+          "alt": "https://movie.douban.com/celebrity/1000147/",
+          "avatars": {
+            "small": "http://img7.doubanio.com/img/celebrity/small/35783.jpg",
+            "large": "http://img7.doubanio.com/img/celebrity/large/35783.jpg",
+            "medium": "http://img7.doubanio.com/img/celebrity/medium/35783.jpg"
+          },
+          "name": "萨姆·沃辛顿",
+          "id": "1000147"
+        },
+        {
+          "alt": "https://movie.douban.com/celebrity/1002673/",
+          "avatars": {
+            "small": "http://img3.doubanio.com/img/celebrity/small/6056.jpg",
+            "large": "http://img3.doubanio.com/img/celebrity/large/6056.jpg",
+            "medium": "http://img3.doubanio.com/img/celebrity/medium/6056.jpg"
+          },
+          "name": "文斯·沃恩",
+          "id": "1002673"
+        }
+      ],
+      "collect_count": 63934,
+      "original_title": "Hacksaw Ridge",
+      "subtype": "movie",
+      "directors": [
+        {
+          "alt": "https://movie.douban.com/celebrity/1054530/",
+          "avatars": {
+            "small": "http://img7.doubanio.com/img/celebrity/small/680.jpg",
+            "large": "http://img7.doubanio.com/img/celebrity/large/680.jpg",
+            "medium": "http://img7.doubanio.com/img/celebrity/medium/680.jpg"
+          },
+          "name": "梅尔·吉布森",
+          "id": "1054530"
+        }
+      ],
+      "year": "2016",
+      "images": {
+        "small": "http://img3.doubanio.com/view/movie_poster_cover/ipst/public/p2397337958.jpg",
+        "large": "http://img3.doubanio.com/view/movie_poster_cover/lpst/public/p2397337958.jpg",
+        "medium": "http://img3.doubanio.com/view/movie_poster_cover/spst/public/p2397337958.jpg"
+      },
+      "alt": "https://movie.douban.com/subject/26325320/",
+      "id": "26325320"
+    }
+  ],
+  "title": "正在上映的电影-北京"
+}
+	var module = angular.module('moviecat.in_theaters', ['ngRoute']).
+		//配置模块路由
+		config(['$routeProvider',function($routeProvider) {
+			$routeProvider.when('/in_theaters/:name',
+			{
+				templateUrl:'in_theaters/view.html',
+				controller:'IntheatersController'
+			});
+		}]);
+		module.controller('IntheatersController', ['$scope','$routeParams', '$http',function($scope,$routeParams,$http){
+			// 设计暴露的数据
+			$scope.subjects = [];
+			//$scope.subjects= data.subjects;
+			$http.get('/app/src/js/data.json').then(function (data) {
+				if(data.status == 200)
+				{
+
+					$scope.subjects = data.data.subjects;
+				}else {
+					console.log('获取数据错误')
+				}
+				
+			},function (err) {
+			console.log('获取数据错误'+err.statusText);
+			});
+		}])
+
+})(angular)
