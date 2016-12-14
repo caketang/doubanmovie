@@ -1,15 +1,15 @@
 (function (angular) {
 	
-	var module = angular.module('moviecat.in_theaters', ['ngRoute','moviecat.http'])
+	var module = angular.module('moviecat.coming_soon', ['ngRoute','moviecat.http'])
 		//配置模块路由
 		.config(['$routeProvider',function($routeProvider) {
-			$routeProvider.when('/in_theaters/:page',
+			$routeProvider.when('/coming_soon/:page',
 			{
-				templateUrl:'in_theaters/view.html',
-				controller:'IntheatersController'
+				templateUrl:'coming_soon/view.html',
+				controller:'ComingSoonController'
 			});
 		}])
-		.controller('IntheatersController', ['$scope','$routeParams','$route','HttpService',function($scope,$routeParams,$route,HttpService){
+		.controller('ComingSoonController', ['$scope','$routeParams','$route','HttpService',function($scope,$routeParams,$route,HttpService){
 			// 设计暴露的数据 暴露数据的行为
 			// 遮罩
 			var page = parseInt($routeParams.page); // 一共多少页
@@ -22,7 +22,7 @@
 			$scope.totalCount=0;
 			$scope.totalPages=0;
 			$scope.currentPage=page;
-			HttpService.jsonp('http://api.douban.com/v2/movie/in_theaters',{
+			HttpService.jsonp('http://api.douban.com/v2/movie/coming_soon',{
 				start:start,
 				count:count
 			},function (data) {

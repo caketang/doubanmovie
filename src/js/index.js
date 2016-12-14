@@ -6,12 +6,12 @@
 angular.module('moviecat', 
 	[
 	'ngRoute',
-	'moviecat.comming_soon',
+	'moviecat.movie_list',
+	'moviecat.coming_soon',
 	'moviecat.in_theaters',
 	'moviecat.top'
 	]).
 	config(['$routeProvider',function($routeProvider) {
-
-		$routeProvider.otherwise({redirectTo:'/comming_soon'});
+		$routeProvider.otherwise({redirectTo:'/in_theaters/1'});
 	}])
 	
