@@ -12,7 +12,10 @@
 				var fnSuffix = Math.random().toString().replace('.','');
 				var cbFunc = 'my_json_cb'+fnSuffix;
 				//
-				$window[cbFunc] = callback;
+				$window[cbFunc] =function (data) {
+					callback(data);
+					$document[0].body.removeChild(scriptElement);
+				};
 				var queryString = url.indexOf('?') == -1 ? '?' : '&';
 				for(var key in data)
 				{
